@@ -55,11 +55,14 @@ class ValidatesUrlFormatOfTest < Test::Unit::TestCase
       nil, 1, "", " ", "url",
       "www.example.com",
       "http://ex ample.com",
+      'http://256.0.0.1',
+      'http://u:u:u@example.com',
+      
+      # These can all be valid local URLs, but should not be considered valid
+      # for public consumption.
       "http://example",
       "http://example.c",
-      'http://example.toolongtld',
-      'http://256.0.0.1',
-      'http://u:u:u@example.com'
+      'http://example.toolongtld'
     ].each do |url|
       @model.url = url
       @model.save
