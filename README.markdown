@@ -20,7 +20,7 @@ Please note that the regexp used to validate URLs is not perfect, but hopefully 
 
 ## Limitations and design choices
 
-Does not yet handle IPv6 or IDNs ("http://räksmörgås.nu").
+Does not handle IPv6 or IDNs ("http://räksmörgås.nu").
 
 By design, the plugin does not allow e.g. "http://localhost" or "http://my.localurl", which are valid URLs but not suitable in most web apps. It also requires a "http://" or "https://" prefix, so just "example.com" is not valid. Fix that in the setter.
   
