@@ -15,11 +15,14 @@ class Model
   
   extend ValidatesUrlFormatOf
 
-  attr_accessor :url
-  validates_url_format_of :url
-  
   attr_accessor :homepage
-  validates_url_format_of :homepage, :message => 'custom message'
+  validates_url_format_of :homepage
+  
+  attr_accessor :my_UrL_hooray
+  validates_url_format_of :my_UrL_hooray
+  
+  attr_accessor :custom_url
+  validates_url_format_of :custom_url, :message => 'custom message'
 end
 
 class ValidatesUrlFormatOfTest < Test::Unit::TestCase
@@ -48,9 +51,9 @@ class ValidatesUrlFormatOfTest < Test::Unit::TestCase
       'HttP://example.com',
       'https://example.com'
     ].each do |url|
-      @model.url = url
+      @model.homepage = url
       @model.save
-      assert !@model.errors.on(:url), "#{url.inspect} should have been accepted"
+      assert !@model.errors.on(:homepage), "#{url.inspect} should have been accepted"
     end
   end
   
@@ -69,16 +72,25 @@ class ValidatesUrlFormatOfTest < Test::Unit::TestCase
       "http://example.c",
       'http://example.toolongtld'
     ].each do |url|
-      @model.url = url
+      @model.homepage = url
       @model.save
-      assert @model.errors.on(:url), "#{url.inspect} should have been rejected"
+      assert @model.errors.on(:homepage), "#{url.inspect} should have been rejected"
     end
   end
   
-  def test_can_override_defaults
+  def test_different_defaults_based_on_attribute_name
     @model.homepage = 'x'
+    @model.my_UrL_hooray = 'x'
     @model.save
-    assert_equal 'custom message', @model.errors.on(:homepage)
+    assert_not_equal ValidatesUrlFormatOf::DEFAULT_MESSAGE, ValidatesUrlFormatOf::DEFAULT_MESSAGE_URL
+    assert_equal ValidatesUrlFormatOf::DEFAULT_MESSAGE, @model.errors.on(:homepage)
+    assert_equal ValidatesUrlFormatOf::DEFAULT_MESSAGE_URL, @model.errors.on(:my_UrL_hooray)
+  end
+  
+  def test_can_override_defaults
+    @model.custom_url = 'x'
+    @model.save
+    assert_equal 'custom message', @model.errors.on(:custom_url)
   end
   
 end

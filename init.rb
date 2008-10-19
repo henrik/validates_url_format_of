@@ -10,15 +10,20 @@ module ValidatesUrlFormatOf
     ([/?]\S*)?                                 # optional /whatever or ?whatever
     \Z
   }ix
+
+  DEFAULT_MESSAGE     = 'does not appear to be a valid URL'
+  DEFAULT_MESSAGE_URL = 'does not appear to be valid'
   
   def validates_url_format_of(*attr_names)
-    options = { :message => 'does not appear to be valid',
-                :allow_nil => false,
+    options = { :allow_nil => false,
                 :allow_blank => false,
-                :with => REGEXP }
+                :with => REGEXP }                
     options = options.merge(attr_names.pop) if attr_names.last.is_a?(Hash)
-    attr_names << options
-    validates_format_of(*attr_names)
+
+    attr_names.each do |attr_name|
+      message = attr_name.to_s.match(/(_|\b)URL(_|\b)/i) ? DEFAULT_MESSAGE_URL : DEFAULT_MESSAGE
+      validates_format_of(attr_name, { :message => message }.merge(options))
+    end
   end
   
 end
