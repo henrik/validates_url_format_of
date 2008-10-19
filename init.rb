@@ -1,5 +1,5 @@
 module ValidatesUrlFormatOf
-  REGEXP = %r{\Ahttps?://[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,6}(:\d{1,5})?(/.*)?\Z}i  
+  REGEXP = %r{\Ahttps?://[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,6}(:\d{1,5})?([/?].*)?\Z}i  
   
   def validates_url_format_of(*attr_names)
     options = { :message => 'does not appear to be valid',
