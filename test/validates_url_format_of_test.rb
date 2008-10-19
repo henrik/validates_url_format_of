@@ -17,6 +17,9 @@ class Model
 
   attr_accessor :url
   validates_url_format_of :url
+  
+  attr_accessor :homepage
+  validates_url_format_of :homepage, :message => 'custom message'
 end
 
 class ValidatesUrlFormatOfTest < Test::Unit::TestCase
@@ -70,6 +73,12 @@ class ValidatesUrlFormatOfTest < Test::Unit::TestCase
       @model.save
       assert @model.errors.on(:url), "#{url.inspect} should have been rejected"
     end
+  end
+  
+  def test_can_override_defaults
+    @model.homepage = 'x'
+    @model.save
+    assert_equal 'custom message', @model.errors.on(:homepage)
   end
   
 end
