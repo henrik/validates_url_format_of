@@ -39,8 +39,8 @@ class ValidatesUrlFormatOfTest < Test::Unit::TestCase
       'http://example.com/~user',
       'http://example.co',  # not a real TLD, but we're fine with anything of 2+ chars
       'http://example.museum',
-#      'http://1.2.3.4',
-#      'http://1.2.3.4:80',
+      'http://1.0.255.249',
+      'http://1.2.3.4:80',
       'HttP://example.com',
       'https://example.com'
     ].each do |url|
@@ -57,7 +57,8 @@ class ValidatesUrlFormatOfTest < Test::Unit::TestCase
       "http://ex ample.com",
       "http://example",
       "http://example.c",
-      'http://example.toolongtld'
+      'http://example.toolongtld',
+      'http://256.0.0.1'
     ].each do |url|
       @model.url = url
       @model.save
