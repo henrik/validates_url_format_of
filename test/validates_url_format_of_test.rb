@@ -43,6 +43,7 @@ class ValidatesUrlFormatOfTest < Test::Unit::TestCase
       'http://example.com:8000',
       'http://www.sub.example.com/page.html?foo=bar&baz=%23#anchor',
       'http://user:pass@example.com',
+      'http://user:@example.com',
       'http://example.com/~user',
       'http://example.co',  # Not a real TLD, but we're fine with anything of 2-6 chars
       'http://example.museum',
