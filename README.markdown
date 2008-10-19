@@ -1,6 +1,6 @@
 # validates\_url\_format\_of
 
-Rails plugin that provides `validates_url_format_of` to `ActiveRecord` models.
+Rails plugin that provides a `validates_url_format_of` method to `ActiveRecord` models. URLs are validated by regexp.
 
 ## Usage
 
