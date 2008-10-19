@@ -32,7 +32,7 @@ class ValidatesUrlFormatOfTest < Test::Unit::TestCase
       'http://www.example.com/',
       'http://sub.domain.example.com/',
 #      'http://example.com?url=http://example.com',
-#      'http://example.com:8000',
+      'http://example.com:8000',
       'http://www.sub.example.com/page.html?foo=bar&baz=%23#anchor',
 #      'http://user:pass@example.com',
       'http://example.com/~user',
