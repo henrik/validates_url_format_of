@@ -14,7 +14,7 @@ After installing the plugin, it's used like
     
 Takes the same arguments as [`validates_format_of`](http://api.rubyonrails.org/classes/ActiveRecord/Validations/ClassMethods.html#M001052) except for the `:with` regexp.
 
-The default `:message` is different based on whether or not the attribute name contains the word "URL". So you will get "Homepage URL does not appear to be valid" but "Homepage does not appear to be a valid URL" without having to customize the `:message`.
+The default `:message` is different depending on whether the attribute name contains the word "URL". So you will get "Homepage URL does not appear to be valid" but "Homepage does not appear to be a valid URL" without having to customize the `:message`.
 
 Please note that the regexp used to validate URLs is not perfect, but hopefully good enough. See the test suite. Patches are very welcome.
   
