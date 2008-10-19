@@ -14,7 +14,7 @@ After installing the plugin, it's used like
     
 Takes the same arguments as [`validates_format_of`](http://api.rubyonrails.org/classes/ActiveRecord/Validations/ClassMethods.html#M001052) except for the `:with` regexp.
 
-Please not that the regexp used is not perfect, but hopefully good enough. See the test suite. Patches are very welcome.
+Please note that the regexp used is not perfect, but hopefully good enough. See the test suite. Patches are very welcome.
   
 ## Credits and license
 
