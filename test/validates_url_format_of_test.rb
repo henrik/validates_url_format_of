@@ -50,7 +50,9 @@ class ValidatesUrlFormatOfTest < Test::Unit::TestCase
       'http://1.0.255.249',
       'http://1.2.3.4:80',
       'HttP://example.com',
-      'https://example.com'
+      'https://example.com',
+      'http://räksmörgås.nu',  # IDN
+      'http://xn--rksmrgs-5wao1o.nu'  # Punycode
     ].each do |url|
       @model.homepage = url
       @model.save
@@ -66,6 +68,7 @@ class ValidatesUrlFormatOfTest < Test::Unit::TestCase
       "http://example.com/foo bar",
       'http://256.0.0.1',
       'http://u:u:u@example.com',
+      'http://r?ksmorgas.com',
       
       # These can all be valid local URLs, but should not be considered valid
       # for public consumption.
