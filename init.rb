@@ -7,7 +7,7 @@ module ValidatesUrlFormatOf
     ( [a-z0-9]+([-.][a-z0-9]+)*\.[a-z]{2,6} |  # domain...
         #{IPv4_PART}(\.#{IPv4_PART}){3} )      # or IPv4
     (:\d{1,5})?                                # optional port
-    ([/?].*)?                                  # optional /whatever or ?whatever
+    ([/?]\S*)?                                 # optional /whatever or ?whatever
     \Z
   }ix
   

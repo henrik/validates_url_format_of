@@ -55,6 +55,7 @@ class ValidatesUrlFormatOfTest < Test::Unit::TestCase
       nil, 1, "", " ", "url",
       "www.example.com",
       "http://ex ample.com",
+      "http://example.com/foo bar",
       'http://256.0.0.1',
       'http://u:u:u@example.com',
       
