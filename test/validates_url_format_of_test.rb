@@ -10,6 +10,9 @@ class Model
   def save!() end
   def update_attribute() end
   def new_record?() false end
+  def self.self_and_descendents_from_active_record() [self] end
+  def self.human_name() end
+  def self.human_attribute_name(_) end
   def initialize() @errors = ActiveRecord::Errors.new(self) end
   include ActiveRecord::Validations
   
