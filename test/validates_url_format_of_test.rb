@@ -55,7 +55,9 @@ class ValidatesUrlFormatOfTest < Test::Unit::TestCase
       'HttP://example.com',
       'https://example.com',
       'http://räksmörgås.nu',  # IDN
-      'http://xn--rksmrgs-5wao1o.nu'  # Punycode
+      'http://xn--rksmrgs-5wao1o.nu',  # Punycode
+      'http://example.com.',  # Explicit TLD root period
+      'http://example.com./foo'
     ].each do |url|
       @model.homepage = url
       @model.save
