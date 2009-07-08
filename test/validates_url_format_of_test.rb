@@ -6,6 +6,7 @@ require "#{File.dirname(__FILE__)}/../init"
 class Model
   # ActiveRecord validations without database
   # Thanks to http://www.prestonlee.com/archives/182
+  # Updated for Rails 2.3
   def save() end
   def save!() end
   def update_attribute() end
@@ -14,6 +15,9 @@ class Model
   def self.human_name() end
   def self.human_attribute_name(_) end
   def initialize() @errors = ActiveRecord::Errors.new(self) end
+  def self.self_and_descendants_from_active_record
+    [self]
+  end
   include ActiveRecord::Validations
   
   extend ValidatesUrlFormatOf
