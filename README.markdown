@@ -2,6 +2,9 @@
 
 Rails plugin that provides a `validates_url_format_of` method to `ActiveRecord` models. URLs are validated by regexp.
 
+Known to be compatible with ActiveRecord 3.0.0.beta, 2.3.5, 2.2.2, 2.1.2.
+
+
 ## Usage
 
 After installing the plugin, it's used like
@@ -18,12 +21,14 @@ The default `:message` is different depending on whether the attribute name cont
 
 Please note that the regexp used to validate URLs is not perfect, but hopefully good enough. See the test suite. Patches are very welcome.
 
+
 ## Limitations and design choices
 
 Does not handle IPv6.
 
 By design, the plugin does not allow e.g. "http://localhost" or "http://my.localurl", which are valid URLs but not suitable in most web apps. It also requires a "http://" or "https://" prefix, so just "example.com" is not valid. Fix that in the setter.
   
+
 ## Credits and license
 
 By [Henrik Nyh](http://henrik.nyh.se/) under the MIT license:
