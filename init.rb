@@ -17,7 +17,7 @@ module ValidatesUrlFormatOf
   def validates_url_format_of(*attr_names)
     options = { :allow_nil => false,
                 :allow_blank => false,
-                :with => REGEXP }                
+                :with => REGEXP }
     options = options.merge(attr_names.pop) if attr_names.last.is_a?(Hash)
 
     attr_names.each do |attr_name|
@@ -28,8 +28,4 @@ module ValidatesUrlFormatOf
   
 end
 
-if defined?(ActiveModel::Validations)  # Rails 3
-  ActiveModel::Validations.extend(ValidatesUrlFormatOf)
-else  # Rails 2.*
-  ActiveRecord::Base.extend(ValidatesUrlFormatOf)
-end
+ActiveRecord::Base.extend(ValidatesUrlFormatOf)
