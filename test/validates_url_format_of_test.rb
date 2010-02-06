@@ -4,22 +4,28 @@ require 'active_record'
 require "#{File.dirname(__FILE__)}/../init"
 
 class Model
-  # ActiveRecord validations without database
-  # Thanks to http://www.prestonlee.com/archives/182
-  # Updated for Rails 2.3
-  def save() end
-  def save!() end
-  def update_attribute() end
-  def new_record?() false end
-  def self.self_and_descendents_from_active_record() [self] end
-  def self.human_name() end
-  def self.human_attribute_name(_) end
-  def initialize() @errors = ActiveRecord::Errors.new(self) end
-  def self.self_and_descendants_from_active_record
-    [self]
+  begin  # Rails 3
+    include ActiveModel::Validations
+  rescue NameError  # Rails 2.*
+	  # ActiveRecord validations without database
+    # Thanks to http://www.prestonlee.com/archives/182
+    def save() end
+    def save!() end
+    def new_record?() false end
+    def update_attribute() end  # Needed by Rails 2.1.
+    def self.human_name() end
+    def self.human_attribute_name(_) end
+    def initialize
+      @errors = ActiveRecord::Errors.new(self)
+      def @errors.[](key)  # Return errors in same format as Rails 3.
+        Array(on(key))
+      end
+    end
+    def self.self_and_descendants_from_active_record() [self] end
+    def self.self_and_descendents_from_active_record() [self] end  # Needed by Rails 2.2.
+    include ActiveRecord::Validations
   end
-  include ActiveRecord::Validations
-  
+    
   extend ValidatesUrlFormatOf
 
   attr_accessor :homepage
@@ -64,8 +70,8 @@ class ValidatesUrlFormatOfTest < Test::Unit::TestCase
       'http://example.com./foo'
     ].each do |url|
       @model.homepage = url
-      @model.save
-      assert !@model.errors.on(:homepage), "#{url.inspect} should have been accepted"
+      @model.valid?
+      assert @model.errors[:homepage].empty?, "#{url.inspect} should have been accepted"
     end
   end
   
@@ -86,24 +92,24 @@ class ValidatesUrlFormatOfTest < Test::Unit::TestCase
       'http://example.toolongtld'
     ].each do |url|
       @model.homepage = url
-      @model.save
-      assert @model.errors.on(:homepage), "#{url.inspect} should have been rejected"
+      @model.valid?
+      assert !@model.errors[:homepage].empty?, "#{url.inspect} should have been rejected"
     end
   end
   
   def test_different_defaults_based_on_attribute_name
     @model.homepage = 'x'
     @model.my_UrL_hooray = 'x'
-    @model.save
+    @model.valid?
     assert_not_equal ValidatesUrlFormatOf::DEFAULT_MESSAGE, ValidatesUrlFormatOf::DEFAULT_MESSAGE_URL
-    assert_equal ValidatesUrlFormatOf::DEFAULT_MESSAGE, @model.errors.on(:homepage)
-    assert_equal ValidatesUrlFormatOf::DEFAULT_MESSAGE_URL, @model.errors.on(:my_UrL_hooray)
+    assert_equal [ValidatesUrlFormatOf::DEFAULT_MESSAGE], @model.errors[:homepage]
+    assert_equal [ValidatesUrlFormatOf::DEFAULT_MESSAGE_URL], @model.errors[:my_UrL_hooray]
   end
   
   def test_can_override_defaults
     @model.custom_url = 'x'
-    @model.save
-    assert_equal 'custom message', @model.errors.on(:custom_url)
+    @model.valid?
+    assert_equal ['custom message'], @model.errors[:custom_url]
   end
   
 end
