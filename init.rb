@@ -28,4 +28,8 @@ module ValidatesUrlFormatOf
   
 end
 
-ActiveRecord::Base.extend(ValidatesUrlFormatOf)
+if defined?(ActiveModel::Validations)  # Rails 3
+  ActiveModel::Validations.extend(ValidatesUrlFormatOf)
+else  # Rails 2.*
+  ActiveRecord::Base.extend(ValidatesUrlFormatOf)
+end
