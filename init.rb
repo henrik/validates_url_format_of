@@ -27,9 +27,8 @@ module ValidatesUrlFormatOf
       validates_format_of(attr_name, { :message => message }.merge(options))
       validates_each attr_name do |record, attr, value|
         unless record.errors.on(attr) || value.blank? # skip if the url is already invalid or blank
-          protocol_match = value.match(/([a-z]+):/iu)
-          protocol = protocol_match[1].downcase if protocol_match
-          record.errors.add attr, message unless options[:allow_protocols].include?(protocol)
+          protocol = value[/\A\s*([a-z]+):/i, 1].to_s.downcase
+          record.errors.add attr, options.fetch(:message, message) unless options[:allow_protocols].include?(protocol)
         end
       end
     end

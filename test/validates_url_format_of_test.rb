@@ -89,6 +89,7 @@ class ValidatesUrlFormatOfTest < Test::Unit::TestCase
       'http://256.0.0.1',
       'http://u:u:u@example.com',
       'http://r?ksmorgas.com',
+      'blork://example.com',
       
       # These can all be valid local URLs, but should not be considered valid
       # for public consumption.
@@ -112,6 +113,13 @@ class ValidatesUrlFormatOfTest < Test::Unit::TestCase
     @model.ftp_url = "http://example.com"
     @model.valid?
     assert !@model.errors[:ftp_url].empty?, '"http" should have been rejected'
+  end
+  
+  def test_allowed_protocol_list_with_custom_message 
+    @model.custom_url = "ftp://example.com"
+    @model.valid?
+    assert !@model.errors[:custom_url].empty?, "non-http protocol should have been rejected"
+    assert @model.errors[:custom_url].include?('custom message'), "expected #{@model.errors[:custom_url].inspect} to contain 'custom message'"
   end
   
   def test_allows_nil
