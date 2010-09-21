@@ -36,6 +36,9 @@ class Model
   
   attr_accessor :custom_url
   validates_url_format_of :custom_url, :message => 'custom message'
+  
+  attr_accessor :ftp_url
+  validates_url_format_of :ftp_url, :allow_protocols => %w(ftp ftps), :allow_nil => true
 end
 
 class ValidatesUrlFormatOfTest < Test::Unit::TestCase
@@ -97,6 +100,24 @@ class ValidatesUrlFormatOfTest < Test::Unit::TestCase
       @model.valid?
       assert !@model.errors[:homepage].empty?, "#{url.inspect} should have been rejected"
     end
+  end
+  
+  def test_allowed_protocol_list
+    %w(ftp ftps).each do |protocol|
+      @model.ftp_url = "#{protocol}://example.com"
+      @model.valid?
+      assert @model.errors[:ftp_url].empty?, "#{protocol.inspect} should have been accepted"
+    end
+    
+    @model.ftp_url = "http://example.com"
+    @model.valid?
+    assert !@model.errors[:ftp_url].empty?, '"http" should have been rejected'
+  end
+  
+  def test_allows_nil
+    @model.ftp_url = nil
+    @model.valid?
+    assert @model.errors[:ftp_url].empty?, "nil should have been accepted"
   end
   
   def test_different_defaults_based_on_attribute_name
