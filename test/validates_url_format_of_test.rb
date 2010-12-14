@@ -39,6 +39,12 @@ class Model
   
   attr_accessor :ftp_url
   validates_url_format_of :ftp_url, :allow_protocols => %w(ftp ftps), :allow_nil => true
+
+  attr_accessor :if_true_url
+  validates_url_format_of :if_true_url, :if => lambda { true }
+
+  attr_accessor :if_false_url
+  validates_url_format_of :if_false_url, :if => lambda { false }
 end
 
 class ValidatesUrlFormatOfTest < Test::Unit::TestCase
@@ -141,6 +147,26 @@ class ValidatesUrlFormatOfTest < Test::Unit::TestCase
     @model.custom_url = 'x'
     @model.valid?
     assert_equal ['custom message'], @model.errors[:custom_url]
+  end
+  
+  def test_if_passed_through_true
+    @model.if_true_url = 'x'
+    @model.valid?
+    assert !@model.errors[:if_true_url].empty?, "Bad url should have been rejected"
+
+    @model.if_true_url = 'http://valid.url.com/hey/index.html'
+    @model.valid?
+    assert @model.errors[:if_true_url].empty?, "good url should pass"
+  end
+
+  def test_if_passed_through_false
+    @model.if_false_url = 'x'
+    @model.valid?
+    assert @model.errors[:if_false_url].empty?, ":if was not passed through to underlying validation routines"
+
+    @model.if_false_url = 'http://valid.url.com/hey/index.html'
+    @model.valid?
+    assert @model.errors[:if_false_url].empty?, "Somehow a good url was rejected in addition to :if not passing through properly"
   end
   
 end
