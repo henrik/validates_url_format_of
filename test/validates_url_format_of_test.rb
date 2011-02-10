@@ -8,7 +8,7 @@ class Model
   begin  # Rails 3
     include ActiveModel::Validations
   rescue NameError  # Rails 2.*
-	  # ActiveRecord validations without database
+    # ActiveRecord validations without database
     # Thanks to http://www.prestonlee.com/archives/182
     def save() end
     def save!() end
@@ -26,25 +26,25 @@ class Model
     def self.self_and_descendents_from_active_record() [self] end  # Needed by Rails 2.2.
     include ActiveRecord::Validations
   end
-    
+
   extend ValidatesUrlFormatOf
 
   attr_accessor :homepage
   validates_url_format_of :homepage
-  
+
   attr_accessor :my_UrL_hooray
   validates_url_format_of :my_UrL_hooray
-  
+
   attr_accessor :custom_url
   validates_url_format_of :custom_url, :message => 'custom message'
 end
 
 class ValidatesUrlFormatOfTest < Test::Unit::TestCase
-  
+
   def setup
     @model = Model.new
   end
-  
+
   def test_should_allow_valid_urls
     [
       'http://example.com',
@@ -77,7 +77,7 @@ class ValidatesUrlFormatOfTest < Test::Unit::TestCase
       assert @model.errors[:homepage].empty?, "#{url.inspect} should have been accepted"
     end
   end
-  
+
   def test_should_reject_invalid_urls
     [
       nil, 1, "", " ", "url",
@@ -88,7 +88,7 @@ class ValidatesUrlFormatOfTest < Test::Unit::TestCase
       'http://256.0.0.1',
       'http://u:u:u@example.com',
       'http://r?ksmorgas.com',
-      
+
       # These can all be valid local URLs, but should not be considered valid
       # for public consumption.
       "http://example",
@@ -100,7 +100,7 @@ class ValidatesUrlFormatOfTest < Test::Unit::TestCase
       assert !@model.errors[:homepage].empty?, "#{url.inspect} should have been rejected"
     end
   end
-  
+
   def test_different_defaults_based_on_attribute_name
     @model.homepage = 'x'
     @model.my_UrL_hooray = 'x'
@@ -109,11 +109,11 @@ class ValidatesUrlFormatOfTest < Test::Unit::TestCase
     assert_equal [ValidatesUrlFormatOf::DEFAULT_MESSAGE], @model.errors[:homepage]
     assert_equal [ValidatesUrlFormatOf::DEFAULT_MESSAGE_URL], @model.errors[:my_UrL_hooray]
   end
-  
+
   def test_can_override_defaults
     @model.custom_url = 'x'
     @model.valid?
     assert_equal ['custom message'], @model.errors[:custom_url]
   end
-  
+
 end

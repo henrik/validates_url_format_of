@@ -19,7 +19,7 @@ module ValidatesUrlFormatOf
 
   DEFAULT_MESSAGE     = 'does not appear to be a valid URL'
   DEFAULT_MESSAGE_URL = 'does not appear to be valid'
-  
+
   def validates_url_format_of(*attr_names)
     options = { :allow_nil => false,
                 :allow_blank => false,
@@ -31,7 +31,7 @@ module ValidatesUrlFormatOf
       validates_format_of(attr_name, { :message => message }.merge(options))
     end
   end
-  
+
 end
 
 ActiveRecord::Base.extend(ValidatesUrlFormatOf)
