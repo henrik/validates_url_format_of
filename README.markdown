@@ -2,6 +2,8 @@
 
 Rails plugin that provides a `validates_url_format_of` method to `ActiveRecord` models. URLs are validated by regexp.
 
+Known to be compatible with Ruby 1.8 and 1.9.2.
+
 Known to be compatible with ActiveRecord 3.0.0.beta, 2.3.5, 2.2.2, 2.1.2.
 
 
