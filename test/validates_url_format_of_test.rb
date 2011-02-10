@@ -1,7 +1,7 @@
 require 'rubygems'
 require 'test/unit'
 require 'active_record'
-require "#{File.dirname(__FILE__)}/../init"
+require "#{File.expand_path(File.dirname(__FILE__))}/../init.rb"
 
 class Model
   begin  # Rails 3
