@@ -1,13 +1,19 @@
+# encoding: utf-8
 module ValidatesUrlFormatOf
   IPv4_PART = /\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]/  # 0-255
+
+  # First regexp doesn't work in Ruby 1.8 and second has a bug in 1.9.2:
+  # https://github.com/henrik/validates_url_format_of/issues/issue/4/#comment_760674
+  ALNUM = "ä".match(/[[:alnum:]]/) ? /[[:alnum:]]/ : /[^\W_]/
+
   REGEXP = %r{
     \A
-    https?://                                                    # http:// or https://
-    ([^\s:@]+:[^\s:@]*@)?                                        # optional username:pw@
-    ( (([^\W_]+\.)*xn--)?[^\W_]+([-.][^\W_]+)*\.[a-z]{2,6}\.? |  # domain (including Punycode/IDN)...
-        #{IPv4_PART}(\.#{IPv4_PART}){3} )                        # or IPv4
-    (:\d{1,5})?                                                  # optional port
-    ([/?]\S*)?                                                   # optional /whatever or ?whatever
+    https?://                                                          # http:// or https://
+    ([^\s:@]+:[^\s:@]*@)?                                              # optional username:pw@
+    ( ((#{ALNUM}+\.)*xn--)?#{ALNUM}+([-.]#{ALNUM}+)*\.[a-z]{2,6}\.? |  # domain (including Punycode/IDN)...
+        #{IPv4_PART}(\.#{IPv4_PART}){3} )                              # or IPv4
+    (:\d{1,5})?                                                        # optional port
+    ([/?]\S*)?                                                         # optional /whatever or ?whatever
     \Z
   }iux
 

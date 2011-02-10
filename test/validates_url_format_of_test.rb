@@ -63,7 +63,7 @@ class ValidatesUrlFormatOfTest < Test::Unit::TestCase
       'http://example.museum',
       'http://1.0.255.249',
       'http://1.2.3.4:80',
-      'HttP://example.com',
+      'HttP://exAMPle.cOM',
       'https://example.com',
       'http://räksmörgås.nu',  # IDN
       'http://xn--rksmrgs-5wao1o.nu',  # Punycode
@@ -83,6 +83,7 @@ class ValidatesUrlFormatOfTest < Test::Unit::TestCase
       nil, 1, "", " ", "url",
       "www.example.com",
       "http://ex ample.com",
+      "http://ex_ample.com",
       "http://example.com/foo bar",
       'http://256.0.0.1',
       'http://u:u:u@example.com',
