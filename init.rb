@@ -15,7 +15,7 @@ module ValidatesUrlFormatOf
   # Blocks IPv4 127.0.0.1 (which is also localhost)
   LOCALHOST_LOOPBACK    = /(?!127\.0\.0\.[0-8])/
   ALL_ROUTES            = /(?!0\.0\.0\.0)/
-  RFC_1918_IPS          = %r{#{TWENTY_FOUR_BIT_BLOCK}#{TWENTY_BIT_BLOCK}#{SIXTEEN_BIT_BLOCK}#{LOCALHOST_LOOPBACK}#{ALL_ROUTES}}
+  RFC_1918_IPS          = %r{#{TWENTY_FOUR_BIT_BLOCK}#{TWENTY_BIT_BLOCK}#{SIXTEEN_BIT_BLOCK}}
 
   # First regexp doesn't work in Ruby 1.8 and second has a bug in 1.9.2:
   # https://github.com/henrik/validates_url_format_of/issues/issue/4/#comment_760674
@@ -24,7 +24,9 @@ module ValidatesUrlFormatOf
   REGEXP = %r{
     \A
     https?://                                                          # http:// or https://
-    #{RFC_1918_IPS}                                                    # blocks the use of RFC 1918 private network IPv4 addresses, also blocks 127.0.0.0/8 and 0.0.0.0
+    #{LOCALHOST_LOOPBACK}                                              # blocks 127.0.0.0/8
+    #{ALL_ROUTES}                                                      # blocks 0.0.0.0
+    #{RFC_1918_IPS}                                                    # blocks the use of RFC 1918 private network IPv4 addresses
     ([^\s:@]+:[^\s:@]*@)?                                              # optional username:pw@
     ( ((#{ALNUM}+\.)*xn--)?#{ALNUM}+([-.]#{ALNUM}+)*\.[a-z]{2,6}\.? |  # domain (including Punycode/IDN)...
         #{IPv4_PART}(\.#{IPv4_PART}){3} )                              # or IPv4
