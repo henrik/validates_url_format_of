@@ -69,6 +69,7 @@ class ValidatesUrlFormatOfTest < Test::Unit::TestCase
       'http://xn--rksmrgs-5wao1o.nu',  # Punycode
       'http://www.xn--rksmrgs-5wao1o.nu',
       'http://foo.bar.xn--rksmrgs-5wao1o.nu',
+      'https://www.xn----ylbbafnbqebomc7ds.com.gr',
       'http://example.com.',  # Explicit TLD root period
       'http://example.com./foo'
     ].each do |url|
@@ -88,7 +89,6 @@ class ValidatesUrlFormatOfTest < Test::Unit::TestCase
       'http://256.0.0.1',
       'http://u:u:u@example.com',
       'http://r?ksmorgas.com',
-
       # These can all be valid local URLs, but should not be considered valid
       # for public consumption.
       "http://example",
