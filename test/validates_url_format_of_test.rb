@@ -101,6 +101,19 @@ class ValidatesUrlFormatOfTest < Test::Unit::TestCase
     end
   end
 
+  def test_require_publicly_routeable_ip4_addresses
+    private_ips_10 = 100.times.map { "http://10.#{Random.new.rand(0..255)}.#{Random.new.rand(0..255)}.#{Random.new.rand(0..255)}" }
+    private_ips_172 = 100.times.map { "http://172.#{Random.new.rand(16..31)}.#{Random.new.rand(0..255)}.#{Random.new.rand(0..255)}" }
+    private_ips_192 = 100.times.map { "http://192.168.#{Random.new.rand(0..255)}.#{Random.new.rand(0..255)}" }
+    reserved_ips = (private_ips_10 << private_ips_172 << private_ips_192 << "http://0.0.0.0" << "http://127.0.0.1").flatten
+    reserved_ips.each do |url|
+      @model.homepage = url
+      @model.valid?
+      assert !@model.errors[:homepage].empty?, "#{url.inspect} should have been rejected"
+    end
+
+  end
+
   def test_different_defaults_based_on_attribute_name
     @model.homepage = 'x'
     @model.my_UrL_hooray = 'x'
