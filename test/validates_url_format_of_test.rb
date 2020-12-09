@@ -70,6 +70,7 @@ class ValidatesUrlFormatOfTest < Test::Unit::TestCase
       'http://www.xn--rksmrgs-5wao1o.nu',
       'http://foo.bar.xn--rksmrgs-5wao1o.nu',
       'https://www.xn----ylbbafnbqebomc7ds.com.gr',
+			'http://xn--80agkgigub5kqa.xn--p1ai',
       'http://example.com.',  # Explicit TLD root period
       'http://example.com./foo'
     ].each do |url|
